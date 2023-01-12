@@ -36,6 +36,7 @@ import com.example.chatapp.Models.Gender
 import com.example.chatapp.Models.UserModel
 import com.example.chatapp.R
 import com.example.chatapp.Util.Screen
+import com.example.chatapp.Util.isValidUrl
 import com.example.chatapp.Util.toBitmap
 import com.example.chatapp.ui.theme.ChatAppTheme
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -267,7 +268,7 @@ fun EditProfileScreen(
                     scope.launch {
                         val gender: Gender = if (isMale) Gender.Male else Gender.Female
                         var remotePicUri = profileImage
-                        if (!URLUtil.isValidUrl(remotePicUri)) {
+                        if (!remotePicUri.isValidUrl()) {
                             val profilePicBitmap = Uri.parse(profileImage).toBitmap(con)
                             remotePicUri = saveProfilePic(profilePicBitmap, email)
                         }

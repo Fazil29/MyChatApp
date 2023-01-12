@@ -6,6 +6,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Patterns
 
 fun Uri.toBitmap(context: Context): Bitmap {
     return if (Build.VERSION.SDK_INT < 28) {
@@ -22,3 +23,5 @@ fun Uri.toBitmap(context: Context): Bitmap {
         )
     }
 }
+
+fun String.isValidUrl(): Boolean = this.contains("http")

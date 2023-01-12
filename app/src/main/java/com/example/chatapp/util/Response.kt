@@ -1,4 +1,4 @@
-package com.example.chatapp.Util
+package com.example.chatapp.util
 
 sealed class Response<T>(val data: T? = null, val message: String? = null) {
     class SUCCESS<T>(data: T?) : Response<T>(data = data)

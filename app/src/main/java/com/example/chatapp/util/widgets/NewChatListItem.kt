@@ -1,8 +1,7 @@
-package com.example.chatapp.Util.Widgets
+package com.example.chatapp.util.widgets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,7 +13,7 @@ import com.example.chatapp.R
 import com.example.chatapp.ui.theme.ChatAppTheme
 
 @Composable
-fun ChatListItem() {
+fun NewChatListItem() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -27,11 +26,10 @@ fun ChatListItem() {
             contentDescription = "Profile Picture",
             modifier = Modifier.weight(0.2f)
         )
-        Column(modifier = Modifier.weight(0.6f)) {
+        Column(modifier = Modifier.weight(0.8f)) {
             Text(text = "Lorem Ipsum")
             Text(text = "Lorem Ipsum")
         }
-        Text(text = "10:00 AM", modifier = Modifier.weight(0.2f))
     }
 }
 
@@ -39,6 +37,6 @@ fun ChatListItem() {
 @Composable
 private fun Preview() {
     ChatAppTheme {
-        ChatListItem()
+        NewChatListItem()
     }
 }

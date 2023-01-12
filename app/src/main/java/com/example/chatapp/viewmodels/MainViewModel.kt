@@ -1,17 +1,23 @@
-package com.example.chatapp.ViewModels
+package com.example.chatapp.viewmodels
 
 import android.app.Activity
-import android.graphics.Bitmap
+import android.net.Uri
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.chatapp.Data.Repository
-import com.example.chatapp.Models.UserModel
-import com.example.chatapp.Util.Response
-import com.example.chatapp.Util.Screen
+import com.example.chatapp.data.repositories.LocalRepository
+import com.example.chatapp.data.repositories.StorageRepository
+import com.example.chatapp.data.repositories.UserRepository
+import com.example.chatapp.models.Gender
+import com.example.chatapp.models.UserModel
+import com.example.chatapp.util.Response
+import com.example.chatapp.util.Screen
+import com.example.chatapp.util.helpers.SignInHelper
+import com.example.chatapp.util.isValidUrl
+import com.example.chatapp.util.toBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +26,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+class MainViewModel @Inject constructor(val userRepository: UserRepository, val localRepository: LocalRepository, val storageRepository: StorageRepository) : ViewModel() {
 
     var user: UserModel = UserModel()
 
@@ -30,7 +36,7 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
     fun getCredentialsFromLocal() {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val credentials = repository.getCredentialsFromLocal()
+                val credentials = localRepository.getCredentialsFromLocal()
                 credentials?.let { user = it }
                 withContext(Dispatchers.Main) {
                     _credentialsFromLocal.value = Response.SUCCESS(credentials)
@@ -41,18 +47,23 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
         }
     }
 
-    fun saveCredentials(userModel: UserModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.saveUserToFireStore(userModel)
-            repository.saveCredentialsToLocal(userModel)
-            user = userModel
+    suspend fun saveCredentials(id: String, name: String, profileImage: String, email: String, bio: String, dob: String, isMale: Boolean) {
+        val gender: Gender = if (isMale) Gender.Male else Gender.Female
+        var remotePicUri = profileImage
+        if (!remotePicUri.isValidUrl()) {
+            val profilePicBitmap = Uri.parse(profileImage).toBitmap(localRepository.context)
+            remotePicUri = storageRepository.saveProfilePicToFirebase(profilePicBitmap, id)
         }
+        val res = UserModel(id, name, remotePicUri, email, bio, gender, dob)
+        userRepository.saveUserToFireStore(res)
+        localRepository.saveCredentialsToLocal(res)
+        user = res
     }
 
     fun openDialog(launcher: ActivityResultLauncher<IntentSenderRequest>) {
-        repository.prepareClientAndRequest(false)
+        SignInHelper.prepareClientAndRequest(localRepository.context, false)
         viewModelScope.launch {
-            val result = repository.oneTapClient.beginSignIn(repository.signInRequest).await()
+            val result = SignInHelper.oneTapClient.beginSignIn(SignInHelper.signInRequest).await()
             val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent).build()
             launcher.launch(intentSenderRequest)
         }
@@ -60,12 +71,12 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
 
     suspend fun signIn(result: ActivityResult, navigate: (String) -> Unit) {
         if (result.resultCode == Activity.RESULT_OK) {
-            val credentials = repository.oneTapClient.getSignInCredentialFromIntent(result.data)
+            val credentials = SignInHelper.oneTapClient.getSignInCredentialFromIntent(result.data)
             credentials.googleIdToken?.let {
-                val firestoreUser = repository.getUserFromFireStore(credentials.id)
+                val firestoreUser = userRepository.getUserFromFireStore(credentials.id)
 
                 if (firestoreUser != null) {
-                    repository.saveCredentialsToLocal(firestoreUser)
+                    localRepository.saveCredentialsToLocal(firestoreUser)
                     user = firestoreUser
                     navigate(Screen.Home.route)
                 } else {
@@ -81,9 +92,5 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
                 }
             }
         }
-    }
-
-    suspend fun saveProfilePicToFirebase(bitmap: Bitmap, id: String): String{
-        return repository.saveProfilePicToFirebase(bitmap, id)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.chatapp.Util
+package com.example.chatapp.util
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash_screen")

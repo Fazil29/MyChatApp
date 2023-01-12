@@ -1,4 +1,4 @@
-package com.example.chatapp.Util.Helpers
+package com.example.chatapp.util.helpers
 
 import android.content.Context
 import androidx.datastore.preferences.core.*

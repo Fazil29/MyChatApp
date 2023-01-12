@@ -1,4 +1,4 @@
-package com.example.chatapp.Screens
+package com.example.chatapp.screens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.example.chatapp.Util.Screen
+import com.example.chatapp.util.Screen
 import kotlinx.coroutines.launch
 import kotlin.reflect.KSuspendFunction2
 

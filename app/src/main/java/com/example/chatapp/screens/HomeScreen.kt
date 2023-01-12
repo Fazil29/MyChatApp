@@ -1,4 +1,4 @@
-package com.example.chatapp.Screens
+package com.example.chatapp.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -16,21 +16,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.chatapp.R
-import com.example.chatapp.Util.Screen
-import com.example.chatapp.Util.Widgets.ChatListItem
+import com.example.chatapp.util.Screen
+import com.example.chatapp.util.widgets.ChatListItem
 import com.example.chatapp.ui.theme.ChatAppTheme
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    Scaffold(topBar = { TopAppBar(title = { Text(text = "Home") }, actions = {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_baseline_person_24),
-            contentDescription = "Edit Profile Button",
-            modifier = Modifier.clickable {
-                navController.navigate(Screen.Profile.route)
-            }
-        )
-    }) }) {
+    Scaffold(topBar = {
+        TopAppBar(title = { Text(text = "Home") }, actions = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_person_24),
+                contentDescription = "Edit Profile Button",
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.EditProfile.route)
+                }
+            )
+        })
+    }) {
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn() {
                 items(count = 20) {

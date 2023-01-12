@@ -1,4 +1,4 @@
-package com.example.chatapp.Util
+package com.example.chatapp.util
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,7 +6,6 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Patterns
 
 fun Uri.toBitmap(context: Context): Bitmap {
     return if (Build.VERSION.SDK_INT < 28) {

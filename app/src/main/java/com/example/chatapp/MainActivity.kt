@@ -4,20 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.chatapp.Screens.*
-import com.example.chatapp.Util.Screen
-import com.example.chatapp.ViewModels.MainViewModel
+import com.example.chatapp.screens.*
+import com.example.chatapp.util.Screen
+import com.example.chatapp.viewmodels.MainViewModel
 import com.example.chatapp.ui.theme.ChatAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,9 +30,6 @@ class MainActivity @Inject constructor() : ComponentActivity() {
         setContent {
             ChatAppTheme {
                 val controller = rememberNavController()
-                var topBarTitle by remember {
-                    mutableStateOf("")
-                }
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -59,7 +53,7 @@ class MainActivity @Inject constructor() : ComponentActivity() {
                             HomeScreen(controller)
                         }
                         composable(route = Screen.EditProfile.route) {
-                            EditProfileScreen(controller, this@MainActivity, mainViewModel.user, mainViewModel::saveCredentials, mainViewModel::saveProfilePicToFirebase)
+                            EditProfileScreen(controller, this@MainActivity, mainViewModel.user, mainViewModel::saveCredentials)
                         }
                         composable(route = Screen.Profile.route) {
                             ProfileScreen(mainViewModel.user)

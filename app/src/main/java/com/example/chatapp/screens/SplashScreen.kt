@@ -1,24 +1,21 @@
-package com.example.chatapp.Screens
+package com.example.chatapp.screens
 
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
-import com.example.chatapp.Models.UserModel
+import com.example.chatapp.models.UserModel
 import com.example.chatapp.R
-import com.example.chatapp.Util.Response
-import com.example.chatapp.Util.Screen
+import com.example.chatapp.util.Response
+import com.example.chatapp.util.Screen
 
 @Composable
 fun SplashScreen(

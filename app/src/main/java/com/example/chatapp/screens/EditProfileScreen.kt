@@ -1,12 +1,10 @@
-package com.example.chatapp.Screens
+package com.example.chatapp.screens
 
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Build
-import android.webkit.URLUtil
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -32,30 +30,26 @@ import androidx.core.graphics.component2
 import androidx.core.graphics.component3
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.chatapp.Models.Gender
-import com.example.chatapp.Models.UserModel
+import com.example.chatapp.models.Gender
+import com.example.chatapp.models.UserModel
 import com.example.chatapp.R
-import com.example.chatapp.Util.Screen
-import com.example.chatapp.Util.isValidUrl
-import com.example.chatapp.Util.toBitmap
+import com.example.chatapp.util.Screen
 import com.example.chatapp.ui.theme.ChatAppTheme
 import com.github.dhaval2404.imagepicker.ImagePicker
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.reflect.KFunction1
 import kotlin.reflect.KSuspendFunction2
+import kotlin.reflect.KSuspendFunction7
 
 @Composable
 fun EditProfileScreen(
     navController: NavController,
     con: Activity,
     userModel: UserModel,
-    saveCredentials: KFunction1<UserModel, Unit>,
-    saveProfilePic: KSuspendFunction2<Bitmap, String, String>
+    saveCredentials: KSuspendFunction7<String, String, String, String, String, String, Boolean, Unit>,
 ) {
 
     var profileImage by remember {
@@ -266,14 +260,7 @@ fun EditProfileScreen(
                 OutlinedButton(enabled = isButtonEnabled, onClick = {
                     Toast.makeText(con, "Saving...", Toast.LENGTH_SHORT).show()
                     scope.launch {
-                        val gender: Gender = if (isMale) Gender.Male else Gender.Female
-                        var remotePicUri = profileImage
-                        if (!remotePicUri.isValidUrl()) {
-                            val profilePicBitmap = Uri.parse(profileImage).toBitmap(con)
-                            remotePicUri = saveProfilePic(profilePicBitmap, email)
-                        }
-                        val res = UserModel(email, name, remotePicUri, email, bio, gender, dob)
-                        saveCredentials(res)
+                        saveCredentials(email, name, profileImage, email, bio, dob, isMale)
                         Toast.makeText(con, "Saved Successfully", Toast.LENGTH_SHORT).show()
                         navController.navigate(Screen.Home.route) {
                             this.popUpTo(Screen.EditProfile.route) {

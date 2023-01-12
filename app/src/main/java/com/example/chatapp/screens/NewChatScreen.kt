@@ -1,9 +1,9 @@
-package com.example.chatapp.Screens
+package com.example.chatapp.screens
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.chatapp.Util.Widgets.NewChatListItem
+import com.example.chatapp.util.widgets.NewChatListItem
 import com.example.chatapp.ui.theme.ChatAppTheme
 
 @Composable

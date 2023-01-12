@@ -1,4 +1,4 @@
-package com.example.chatapp.Models
+package com.example.chatapp.models
 
 data class UserModel(
     var id: String? = null,

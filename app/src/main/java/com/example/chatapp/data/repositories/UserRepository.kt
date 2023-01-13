@@ -14,8 +14,8 @@ class UserRepository @Inject constructor() {
             .document(userId)
             .get()
             .await()
-
-        return fireStoreRes.toObject(UserModel::class.java)
+        val user = fireStoreRes.toObject(UserModel::class.java)
+        return user
     }
 
     suspend fun saveUserToFireStore(user: UserModel) {

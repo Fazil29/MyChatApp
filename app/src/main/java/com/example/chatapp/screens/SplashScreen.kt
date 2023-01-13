@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -16,10 +17,12 @@ import com.example.chatapp.models.UserModel
 import com.example.chatapp.R
 import com.example.chatapp.util.Response
 import com.example.chatapp.util.Screen
+import kotlin.reflect.KFunction0
 
 @Composable
 fun SplashScreen(
     navController: NavController,
+    getCredentials: KFunction0<Unit>,
     credentials: Response<UserModel?>
 ) {
     Box(
@@ -39,22 +42,30 @@ fun SplashScreen(
             contentDescription = "App Icon"
         )
 
+        LaunchedEffect(Unit) {
+            getCredentials()
+        }
+
+
         when (credentials) {
             is Response.SUCCESS -> {
                 credentials.data?.let {
-                    navController.navigate(Screen.Home.route)
-                    {
-                        this.popUpTo(Screen.Splash.route) {
-                            inclusive = true
+                    LaunchedEffect(Unit) {
+                        navController.navigate(Screen.Home.route) {
+                            this.popUpTo(Screen.Splash.route) {
+                                inclusive = true
+                            }
                         }
                     }
                 }
             }
             is Response.ERROR -> {
-                Log.d("TAG", "${credentials.message}")
-                navController.navigate(Screen.Login.route) {
-                    this.popUpTo(Screen.Splash.route) {
-                        inclusive = true
+                LaunchedEffect(Unit) {
+                    Log.d("TAG", "${credentials.message}")
+                    navController.navigate(Screen.Login.route) {
+                        this.popUpTo(Screen.Splash.route) {
+                            inclusive = true
+                        }
                     }
                 }
             }

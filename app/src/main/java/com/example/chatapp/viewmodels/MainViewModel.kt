@@ -2,6 +2,7 @@ package com.example.chatapp.viewmodels
 
 import android.app.Activity
 import android.net.Uri
+import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest

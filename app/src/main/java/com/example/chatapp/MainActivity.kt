@@ -26,7 +26,6 @@ class MainActivity @Inject constructor() : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel.getCredentialsFromLocal()
         setContent {
             ChatAppTheme {
                 val controller = rememberNavController()
@@ -39,6 +38,7 @@ class MainActivity @Inject constructor() : ComponentActivity() {
                         composable(route = Screen.Splash.route) {
                             SplashScreen(
                                 controller,
+                                mainViewModel::getCredentialsFromLocal,
                                 mainViewModel.credentialsFromLocal.value
                             )
                         }

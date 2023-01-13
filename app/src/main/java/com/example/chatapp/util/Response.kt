@@ -1,7 +1,7 @@
 package com.example.chatapp.util
 
-sealed class Response<T>(val data: T? = null, val message: String? = null) {
-    class SUCCESS<T>(data: T?) : Response<T>(data = data)
-    class LOADING<T>() : Response<T>()
-    class ERROR<T>(message: String?) : Response<T>(message = message)
+sealed class Response<T> {
+    data class SUCCESS<T>(val data: T) : Response<T>()
+    class LOADING<T> : Response<T>()
+    data class ERROR<T>(val message: String) : Response<T>()
 }

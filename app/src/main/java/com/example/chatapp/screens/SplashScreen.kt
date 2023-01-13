@@ -41,16 +41,8 @@ fun SplashScreen(
 
         when (credentials) {
             is Response.SUCCESS -> {
-                val response: UserModel? = credentials.data
-                response?.let {
+                credentials.data?.let {
                     navController.navigate(Screen.Home.route)
-                    {
-                        this.popUpTo(Screen.Splash.route) {
-                            inclusive = true
-                        }
-                    }
-                } ?: run {
-                    navController.navigate(Screen.Login.route)
                     {
                         this.popUpTo(Screen.Splash.route) {
                             inclusive = true

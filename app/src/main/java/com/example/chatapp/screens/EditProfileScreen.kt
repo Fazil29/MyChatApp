@@ -53,19 +53,19 @@ fun EditProfileScreen(
 ) {
 
     var profileImage by remember {
-        mutableStateOf(userModel.profileImage ?: "")
+        mutableStateOf(userModel.profileImage)
     }
 
     var name by remember {
-        mutableStateOf(userModel.name ?: "")
+        mutableStateOf(userModel.name)
     }
 
     var email by remember {
-        mutableStateOf(userModel.email ?: "")
+        mutableStateOf(userModel.email)
     }
 
     var bio by remember {
-        mutableStateOf(userModel.bio ?: "")
+        mutableStateOf(userModel.bio)
     }
 
     var isMale by remember {
@@ -73,7 +73,7 @@ fun EditProfileScreen(
     }
 
     var dob by remember {
-        mutableStateOf(userModel.dateOfBirth ?: "")
+        mutableStateOf(userModel.dateOfBirth)
     }
 
     val scope = rememberCoroutineScope()

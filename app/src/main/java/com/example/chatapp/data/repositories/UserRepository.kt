@@ -21,7 +21,7 @@ class UserRepository @Inject constructor() {
     suspend fun saveUserToFireStore(user: UserModel) {
         val db = Firebase.firestore
         db.collection("Users")
-            .document(user.id!!)
+            .document(user.id)
             .set(user)
             .await()
     }

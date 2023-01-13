@@ -26,9 +26,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(val userRepository: UserRepository, val localRepository: LocalRepository, val storageRepository: StorageRepository) : ViewModel() {
+class MainViewModel @Inject constructor(
+    val userRepository: UserRepository,
+    val localRepository: LocalRepository,
+    val storageRepository: StorageRepository
+) : ViewModel() {
 
-    var user: UserModel = UserModel()
+    var user: UserModel = UserModel( "", "", "", "", "", Gender.Male, "")
 
     private val _credentialsFromLocal = mutableStateOf<Response<UserModel?>>(Response.LOADING())
     val credentialsFromLocal = _credentialsFromLocal
@@ -37,9 +41,13 @@ class MainViewModel @Inject constructor(val userRepository: UserRepository, val 
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val credentials = localRepository.getCredentialsFromLocal()
-                credentials?.let { user = it }
-                withContext(Dispatchers.Main) {
-                    _credentialsFromLocal.value = Response.SUCCESS(credentials)
+                credentials?.let {
+                    user = it
+                    withContext(Dispatchers.Main) {
+                        _credentialsFromLocal.value = Response.SUCCESS(credentials)
+                    }
+                } ?: run {
+                    _credentialsFromLocal.value = Response.ERROR("Credentials not found in local")
                 }
             }
         } catch (e: Exception) {
@@ -47,7 +55,15 @@ class MainViewModel @Inject constructor(val userRepository: UserRepository, val 
         }
     }
 
-    suspend fun saveCredentials(id: String, name: String, profileImage: String, email: String, bio: String, dob: String, isMale: Boolean) {
+    suspend fun saveCredentials(
+        id: String,
+        name: String,
+        profileImage: String,
+        email: String,
+        bio: String,
+        dob: String,
+        isMale: Boolean
+    ) {
         val gender: Gender = if (isMale) Gender.Male else Gender.Female
         var remotePicUri = profileImage
         if (!remotePicUri.isValidUrl()) {
@@ -85,7 +101,10 @@ class MainViewModel @Inject constructor(val userRepository: UserRepository, val 
                             id = id,
                             name = "$givenName $familyName",
                             profileImage = "$profilePictureUri",
-                            email = id
+                            email = id,
+                            bio = "",
+                            gender = Gender.Male,
+                            dateOfBirth = ""
                         )
                         navigate(Screen.EditProfile.route)
                     }

@@ -1,13 +1,13 @@
 package com.example.chatapp.models
 
 data class UserModel(
-    var id: String? = null,
-    var name: String? = null,
-    var profileImage: String? = null,
-    var email: String? = null,
-    var bio: String? = null,
-    var gender: Gender? = null,
-    var dateOfBirth: String? = null,
+    var id: String,
+    var name: String,
+    var profileImage: String,
+    var email: String,
+    var bio: String,
+    var gender: Gender,
+    var dateOfBirth: String,
 )
 
 enum class Gender {

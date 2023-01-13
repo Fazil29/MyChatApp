@@ -54,7 +54,7 @@ fun ProfileScreen(userModel: UserModel) {
                 }
             }
 
-            Text(text = userModel.bio ?: "")
+            Text(text = userModel.bio)
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Icon(
@@ -62,7 +62,7 @@ fun ProfileScreen(userModel: UserModel) {
                     contentDescription = null,
                     tint = Color(0xFF760094)
                 )
-                Text(text = userModel.email ?: "", modifier = Modifier.padding(start = 8.dp))
+                Text(text = userModel.email, modifier = Modifier.padding(start = 8.dp))
             }
 
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -71,7 +71,7 @@ fun ProfileScreen(userModel: UserModel) {
                     contentDescription = null,
                     tint = Color(0xFF760094)
                 )
-                Text(text = userModel.dateOfBirth ?: "", modifier = Modifier.padding(start = 8.dp))
+                Text(text = userModel.dateOfBirth, modifier = Modifier.padding(start = 8.dp))
             }
         }
     }

@@ -12,8 +12,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.repositories.LocalRepository
 import com.example.chatapp.data.repositories.StorageRepository
 import com.example.chatapp.data.repositories.UserRepository
-import com.example.chatapp.models.Gender
-import com.example.chatapp.models.UserModel
+import com.example.chatapp.data.models.Gender
+import com.example.chatapp.data.models.UserModel
 import com.example.chatapp.util.Response
 import com.example.chatapp.util.Screen
 import com.example.chatapp.util.helpers.SignInHelper

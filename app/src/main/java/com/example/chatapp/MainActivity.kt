@@ -16,6 +16,7 @@ import com.example.chatapp.screens.*
 import com.example.chatapp.util.Screen
 import com.example.chatapp.viewmodels.MainViewModel
 import com.example.chatapp.ui.theme.ChatAppTheme
+import com.example.chatapp.viewmodels.ChannelViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class MainActivity @Inject constructor() : ComponentActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
+    private val channelViewModel: ChannelViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +52,53 @@ class MainActivity @Inject constructor() : ComponentActivity() {
                             )
                         }
                         composable(route = Screen.Home.route) {
-                            HomeScreen(controller)
+                            HomeScreen(controller, mainViewModel.user.id, channelViewModel.ourInteractedChannels.value, channelViewModel::getOurInteractedChannels)
                         }
                         composable(route = Screen.EditProfile.route) {
-                            EditProfileScreen(controller, this@MainActivity, mainViewModel.user, mainViewModel::saveCredentials)
+                            EditProfileScreen(
+                                controller,
+                                this@MainActivity,
+                                mainViewModel.user,
+                                mainViewModel::saveCredentials
+                            )
                         }
                         composable(route = Screen.Profile.route) {
-                            ProfileScreen(mainViewModel.user)
+                            ProfileScreen(channelViewModel.viewingUserModel)
+                        }
+                        composable(route = Screen.NewChat.route) {
+                            NewChatScreen(
+                                mainViewModel.user,
+                                controller,
+                                channelViewModel::getUsers,
+                                channelViewModel.users.value,
+                                channelViewModel::setViewingUser,
+                                channelViewModel::getChannelId
+                            )
+                        }
+                        composable(route = Screen.CreateNewGroupScreen.route) {
+                            CreateNewGroupScreen(
+                                this@MainActivity,
+                                controller,
+                                channelViewModel.users.value,
+                                channelViewModel::getUsers,
+                                mainViewModel.user.id,
+                                channelViewModel::setViewingUser,
+                                channelViewModel::createGroupChannel
+                            )
+                        }
+                        composable(route = "${Screen.ChatScreen.route}/{channelId}") {
+                            val channelId = it.arguments?.getString("channelId")
+                            if (channelId.isNullOrEmpty())
+                                controller.popBackStack()
+                            else
+                                ChatScreen(channelId)
+                        }
+                        composable(route = "${Screen.GroupChatScreen.route}/{channelId}") {
+                            val channelId = it.arguments?.getString("channelId")
+                            if (channelId.isNullOrEmpty())
+                                controller.popBackStack()
+                            else
+                                GroupChatScreen(channelId)
                         }
                     }
                 }

@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.chatapp.models.UserModel
+import com.example.chatapp.data.models.UserModel
 import com.example.chatapp.R
 import com.example.chatapp.ui.theme.ChatAppTheme
 

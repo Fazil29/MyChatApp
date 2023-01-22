@@ -1,7 +1,7 @@
 package com.example.chatapp.data.repositories
 
 import android.content.Context
-import com.example.chatapp.models.UserModel
+import com.example.chatapp.data.models.UserModel
 import com.example.chatapp.util.helpers.USER_DATA
 import com.example.chatapp.util.helpers.readString
 import com.example.chatapp.util.helpers.writeString

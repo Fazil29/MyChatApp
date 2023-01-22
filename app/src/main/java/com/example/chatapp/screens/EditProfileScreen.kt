@@ -30,8 +30,8 @@ import androidx.core.graphics.component2
 import androidx.core.graphics.component3
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.chatapp.models.Gender
-import com.example.chatapp.models.UserModel
+import com.example.chatapp.data.models.Gender
+import com.example.chatapp.data.models.UserModel
 import com.example.chatapp.R
 import com.example.chatapp.util.Screen
 import com.example.chatapp.ui.theme.ChatAppTheme

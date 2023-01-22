@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
-import com.example.chatapp.models.UserModel
+import com.example.chatapp.data.models.UserModel
 import com.example.chatapp.R
 import com.example.chatapp.util.Response
 import com.example.chatapp.util.Screen

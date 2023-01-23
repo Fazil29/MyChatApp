@@ -1,6 +1,7 @@
 package com.example.chatapp.data.repositories
 
 import com.example.chatapp.data.models.ChannelModel
+import com.example.chatapp.data.models.ChannelType
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -8,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 import java.util.*
 import javax.inject.Inject
 
-class ChannelRepository @Inject constructor() {
+class ChannelRepository @Inject constructor(val userRepository: UserRepository) {
 
     suspend fun getChannel(channel: ChannelModel): String? {
         val db = Firebase.firestore
@@ -20,11 +21,9 @@ class ChannelRepository @Inject constructor() {
                 .documents
         channels.forEach {
             val channelObject = it.toObject(ChannelModel::class.java)
-            if(channelObject?.member?.contains(channel.member[1]) == true)
+            if (channelObject?.member?.contains(channel.member[1]) == true)
                 return it.id
         }
-//        if (channels.isNotEmpty())
-//            return channels[0].getString("id")
         return null
     }
 
@@ -47,9 +46,23 @@ class ChannelRepository @Inject constructor() {
         for (channel in channels) {
             val channelObject = channel.toObject(ChannelModel::class.java)
             if (channelObject != null) {
+                mutateUserChannel(channelObject, userId)
                 interestedChannels.add(channelObject)
             }
         }
         return interestedChannels
+    }
+
+    private suspend fun mutateUserChannel(channelObject: ChannelModel, userId: String) {
+        if (channelObject.type == ChannelType.OneToOne) {
+            for (otherUserId in channelObject.member) {
+                if (otherUserId != userId) {
+                    val otherUser = userRepository.getUserFromFireStore(otherUserId)
+                    channelObject.profilePic = otherUser!!.profileImage
+                    channelObject.name = otherUser.name
+                    break
+                }
+            }
+        }
     }
 }
